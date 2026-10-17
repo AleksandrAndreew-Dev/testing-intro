@@ -27,7 +27,26 @@ function addToCart(cart, item, quantity) {
 }
 
 
-function changeQuantity() { return notImplemented(); }
+function changeQuantity(cart, id, qty) {
+  if (qty <= 0) {
+    throw new RangeError('Qty must be greater than zero')
+  }
+
+  const inCart = cart.find(product => product.id === id)
+  if (!inCart) return cart
+  const available = inCart.stock
+  if (qty > available) {
+    throw new RangeError('Not enough stock')
+  }
+
+  return cart.map(product => {
+    if (product.id === id) {
+      return { ...product, quantity: qty }
+    } return product
+  })
+
+}
+
 function removeFromCart() { return notImplemented(); }
 function calculateCartSubtotal() { return notImplemented(); }
 function calculateOrderTotal() { return notImplemented(); }
