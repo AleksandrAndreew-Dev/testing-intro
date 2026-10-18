@@ -44,7 +44,6 @@ function changeQuantity(cart, id, qty) {
       return { ...product, quantity: qty }
     } return product
   })
-
 }
 
 function removeFromCart(cart, id) {
@@ -56,7 +55,21 @@ function calculateCartSubtotal(cart) {
   const subTotal = cart.reduce((acc, curr) => acc + (curr.price * curr.quantity), 0)
   return subTotal;
 }
-function calculateOrderTotal() { return notImplemented(); }
+
+function calculateOrderTotal(cart, promo) {
+  const subtotal = calculateCartSubtotal(cart);
+  const discount = (promo === 'SAVE10') && (subtotal >= 20000) ? subtotal * 0.1 : 0;
+  const delivery = subtotal < 50000 ? 30000 : 0;
+  const total = subtotal - discount + delivery;
+
+  const orderTotal = {
+    subtotal,
+    discount,
+    delivery,
+    total
+  }
+  return orderTotal;
+}
 
 const cartApi = { addToCart, changeQuantity, removeFromCart, calculateCartSubtotal, calculateOrderTotal };
 
